@@ -1,0 +1,152 @@
+:Task commits:
+
+A Desktop Native tool to track the progress of a users' task
+and report back the efficiency based on time calculated at
+each check point.
+[A semi-graphical tool]
+
+e.g.
+---
+
+# In the begining of every task user says
+$ task init
+
+# This creates a local .cache at $PWD [like a .git].
+
+# If the user think we have finished his task <x%>,
+# he'll do something like this:
+$ task -p update <x%> -m "<commit message>"
+
+# `-p` refers to `progress`
+# `-m` refers to `message`
+
+# When a user commits his work-progress with
+# [some approximation of] <x%> and our tool 
+# cache this info. and tags with the given message.
+
+# After every commit, user can add a note
+# [which is the next step TODO like `try final beta-test`].
+$ task -p note "<note point>"
+
+# At the same time, our tool records the time of the
+# user at each commit [just like git does].
+
+# User can even add breaks for the task to stop the time calculation
+# where the time spent on break doesn't help us to calculate efficiency.
+$ task add-break
+
+# When the user returns, he'll say something like this:
+$ task exit-break
+
+# So, the time point between the break portion won't be calculated
+# as working time!
+
+# When the task is complete, the user adds a final commit message.
+# The final commit message will be something like this:
+$ task done -m "Application backend is ready."
+
+# Now the real fun begins!!!
+# After completion of each task
+# the user asks our tool to give its report
+# on the present task.
+$ task report
+
+# [With openGL API] We generate a report graph by arranging
+# the time-points on X-axis and check-points <x%> on Y-axis.
+
+	progress
+	 ^
+	 .
+	 .
+	 |                                ^^^^      
+100%	-|                               (Done)     
+	 |                         _____/            
+75%	-|                        /             
+	 |                       /              
+50%	-|        ___________   /                             
+	 |       /                              
+25%	-|      /                               
+	 | ____/                                    
+0%	-|/_______________________________...> time
+	 |	|	|	|	| 
+	 0m     30m     1h    1h 30m    2h
+
+
+# `Note`: In the interval 1h to 1h 30m,
+#	  we can observe a small discontinuity
+#	  which is the interval for `break`.
+
+# General work efficiency formula [from Google search]:
+
+			 / Standard Labor Hours  \
+Work-efficiency    =	(  ---------------------  ) x 100
+			 \ Amount of Time Worked /
+# Amount of time stuck [from our previous experience(s)]:
+
+t = n
+  _
+ \		 |at
+ /_ t[from graph]| 
+t = 0		 | [progress]
+		   ---------- = 0     ....(1)
+		     [time]	
+
+# ** Time under line whose slope = 0 "_______",
+# from the above graph!
+
+# Amount of time with smooth work-flow:
+Efficiecnt time spent = Total time [from graph] - result of ...(1)
+
+# So, under the graph, we give 2 tables;
+#1. for the amount of time stuck
+#2. for the amount of time used efficiently
+
+#3. we can even add a table for all the breaks
+#   but at this point, it is out of scope!
+
+
+# Under table #1
+---
+# We give all the time intervals of user stuck to finish a check-point,
+# and all the notes/commits added before & at the end of those 
+# time intervals.
+ _______________________________________________________________
+|      Time	|     Commit	|      Note	  | Check-point |
+-----------------------------------------------------------------
+|	5m	| New fn added	| Add another fn  |   80%-90%	|
+|		|		|for parsing data |		|
+-----------------------------------------------------------------
+|	7m	| API err fixed | Test on /post   |   97%-100%	|
+-----------------------------------------------------------------
+...
+...
+...
+
+
+# Under table #2
+---
+# We provide all the time, which is used efficiently!
+ ________________________________________________________________
+|      Time	|     Commit	|      Note	   | Check-point |
+------------------------------------------------------------------
+|	25m	| New interface	| Fetch data from  |   20%-80%	 |
+|		|     added	| the new API      |		 |
+------------------------------------------------------------------
+|	37m	| fn parse()	| Feed data to     |   92%-97%	 |
+|		| works now	| the new fn & test|		 |	
+------------------------------------------------------------------
+...
+...
+...
+
+# The graph and the table will be displayed graphically 
+# [meaning: not through CLI (or) through GUI]
+
+ _________________________________________________________________________
+|#*** That's it! The 1st version of our tool TASK will be ready to deploy.|
+ _________________________________________________________________________
+
+--> Future development of this project [if needed] includes:
+#** The 2nd and 3rd version will be weekly and monthly reports. [Just an idea, not mandotory!]
+
+#*  The final version consists of instant report of all the tasks active at that time-point.
